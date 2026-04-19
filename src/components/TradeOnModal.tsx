@@ -93,8 +93,12 @@ function ZerodhaForm({ enabled, onDone }: { enabled: boolean; onDone: () => void
     setError(null);
     setLoadingUrl(true);
     // Open the tab synchronously from the click handler so the browser treats it as
-    // a user gesture. We navigate it to the real URL once the fetch resolves.
-    const win = window.open('', '_blank', 'noopener');
+    // a user gesture, then navigate it once the fetch resolves. We cannot pass
+    // 'noopener' here because it forces window.open to return null, which would
+    // leave us without a handle to navigate; instead we null out `opener` on the
+    // new window manually.
+    const win = window.open('about:blank', '_blank');
+    if (win) win.opener = null;
     try {
       const url = await fetchZerodhaLoginUrl();
       setLoginUrl(url);
