@@ -92,11 +92,15 @@ function ZerodhaForm({ enabled, onDone }: { enabled: boolean; onDone: () => void
   async function openLogin() {
     setError(null);
     setLoadingUrl(true);
+    // Open the tab synchronously from the click handler so the browser treats it as
+    // a user gesture. We navigate it to the real URL once the fetch resolves.
+    const win = window.open('', '_blank', 'noopener');
     try {
       const url = await fetchZerodhaLoginUrl();
       setLoginUrl(url);
-      window.open(url, '_blank', 'noopener');
+      if (win) win.location.href = url;
     } catch (err) {
+      if (win) win.close();
       setError(extractErrorMessage(err, 'Failed to fetch login URL'));
     } finally {
       setLoadingUrl(false);

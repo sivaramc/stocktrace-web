@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider';
 import { Button } from '../components/Button';
 import { FormField } from '../components/FormField';
@@ -20,8 +20,10 @@ export function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Use <Navigate> during render rather than calling navigate() imperatively,
+  // which would be a side effect during render.
   if (isAuthenticated) {
-    navigate(from, { replace: true });
+    return <Navigate to={from} replace />;
   }
 
   async function onSubmit(e: FormEvent) {
