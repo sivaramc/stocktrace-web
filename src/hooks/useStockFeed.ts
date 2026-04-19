@@ -51,8 +51,9 @@ export function useStockFeed(): FeedState {
         while (true) {
           const { value, done } = await reader.read();
           if (done) break;
-          buffer += value;
-          // Events are separated by blank lines.
+          // The SSE spec treats CR, LF, and CRLF interchangeably as line
+          // terminators. Normalise everything to LF so we can split on \n\n.
+          buffer += value.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
           let sep = buffer.indexOf('\n\n');
           while (sep !== -1) {
             const raw = buffer.slice(0, sep);
