@@ -74,7 +74,7 @@ export function StocksPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {tiles.map((tile) => {
-            const key = `${tile.tradingsymbol}:${tile.exchange}:${tile.receivedAt}`;
+            const key = `${tile.tradingsymbol}:${tile.exchange}:${tile.transactionType}:${tile.receivedAt}`;
             return (
               <div key={key} className="rounded-lg bg-white border border-slate-200 p-4 shadow-sm">
                 <div className="flex items-start justify-between">

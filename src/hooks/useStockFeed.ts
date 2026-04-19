@@ -104,7 +104,7 @@ function dedupe(tiles: StockTile[]): StockTile[] {
   const seen = new Set<string>();
   const out: StockTile[] = [];
   for (const t of tiles) {
-    const key = `${t.tradingsymbol}|${t.exchange}|${t.receivedAt}`;
+    const key = `${t.tradingsymbol}|${t.exchange}|${t.transactionType}|${t.receivedAt}`;
     if (seen.has(key)) continue;
     seen.add(key);
     out.push(t);
