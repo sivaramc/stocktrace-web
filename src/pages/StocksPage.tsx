@@ -22,7 +22,7 @@ export function StocksPage() {
       tradingsymbol: tile.tradingsymbol,
       exchange: tile.exchange,
       quantity: 1,
-      orderType: tile.triggerPrice ? 'LIMIT' : 'MARKET',
+      orderType: tile.triggerPrice !== null ? 'LIMIT' : 'MARKET',
       price: tile.triggerPrice ?? undefined,
     };
     try {

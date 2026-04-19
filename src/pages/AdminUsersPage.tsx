@@ -15,19 +15,24 @@ export function AdminUsersPage() {
     queryFn: listUsersApi,
   });
 
+  function onMutationSuccess() {
+    setError(null);
+    void qc.invalidateQueries({ queryKey: LIST_KEY });
+  }
+
   const activate = useMutation({
     mutationFn: (id: number) => activateUserApi(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: LIST_KEY }),
+    onSuccess: onMutationSuccess,
     onError: (e) => setError(extractErrorMessage(e, 'Activate failed')),
   });
   const deactivate = useMutation({
     mutationFn: (id: number) => deactivateUserApi(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: LIST_KEY }),
+    onSuccess: onMutationSuccess,
     onError: (e) => setError(extractErrorMessage(e, 'Deactivate failed')),
   });
   const changeRole = useMutation({
     mutationFn: ({ id, role }: { id: number; role: AppRole }) => changeUserRoleApi(id, role),
-    onSuccess: () => qc.invalidateQueries({ queryKey: LIST_KEY }),
+    onSuccess: onMutationSuccess,
     onError: (e) => setError(extractErrorMessage(e, 'Role change failed')),
   });
 
